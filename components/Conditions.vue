@@ -25,7 +25,7 @@ export default {
     Slider
   },
   data: () => ({
-    strength: 'normal',
+    strength: null,
     total: 4,
     digits: 0,
     symbols: 0,
