@@ -11,7 +11,7 @@
         slider(label="桁数" v-model="total" :min="4" :max="64" :disabled="!isCustom")
         slider(label="数字の数" v-model="digits" :min="0" :max="10" :disabled="!isCustom")
         slider(label="記号の数" v-model="symbols" :min="0" :max="10" :disabled="!isCustom")
-        slider(label="生成する個数" v-model="generates" :min="1" :max="50")
+        slider(label="生成する数" v-model="generates" :min="1" :max="50")
 
     v-card-actions
       v-btn(:loading="generating" :disabled="generating" block color="primary" @click="submit") 生成する

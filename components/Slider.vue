@@ -48,5 +48,5 @@ export default {
 <style lang="stylus" scoped>
 .number-field
   max-width 12em
-  min-width 6em
+  min-width 8em
 </style>
