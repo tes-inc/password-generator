@@ -59,7 +59,7 @@ jobs:
             - vendor/bundle
       - add_ssh_keys:
           fingerprints:
-            - "hoge"
+            - "5a:7f:a9:d6:4e:42:22:c6:c5:da:ae:ee:9c:d5:d2:2d"
       - run:
           name: start ssh-agent
           command: |
