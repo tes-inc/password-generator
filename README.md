@@ -1,5 +1,7 @@
 # Password Generator
 
+[![CircleCI](https://circleci.com/gh/tes-inc/password-generator.svg?style=svg&circle-token=4eb991edfbe8f83f8776c66f19bdbdc1a1d208c3)](https://circleci.com/gh/tes-inc/password-generator)
+
 パスワード自動生成サイトです。
 
 [Nuxt.js](https://nuxtjs.org/) と [Vuetify](https://vuetifyjs.com/) によって作られています。
