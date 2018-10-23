@@ -8,9 +8,9 @@
           v-radio(label="強い" value="strong")
           v-radio(label="カスタム" value="custom")
 
-        slider(label="桁数" v-model="total" :min="4" :max="64")
-        slider(label="数字の数" v-model="digits" :min="0" :max="10")
-        slider(label="記号の数" v-model="symbols" :min="0" :max="10")
+        slider(label="桁数" v-model="total" :min="4" :max="64" :disabled="!isCustom")
+        slider(label="数字の数" v-model="digits" :min="0" :max="10" :disabled="!isCustom")
+        slider(label="記号の数" v-model="symbols" :min="0" :max="10" :disabled="!isCustom")
         slider(label="生成する個数" v-model="generates" :min="1" :max="50")
 
     v-card-actions
@@ -25,7 +25,7 @@ export default {
     Slider
   },
   data: () => ({
-    strength: 0,
+    strength: 'normal',
     total: 4,
     digits: 0,
     symbols: 0,
@@ -34,6 +34,9 @@ export default {
   computed: {
     generating() {
       return this.$store.state.generating
+    },
+    isCustom() {
+      return this.strength === 'custom'
     }
   },
   watch: {
