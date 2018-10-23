@@ -1,0 +1,89 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.11.3
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .git
+      - restore_cache:
+          key: v1-yarn-deps-{{ checksum "package.json" }}
+      - run: yarn install
+      - save_cache:
+          key: v1-yarn-deps-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test:
+    docker:
+      - image: circleci/node:8.11.3
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: lint
+          command: |
+            mkdir -p /tmp/test-reports/eslint
+            node_modules/.bin/eslint . --format junit --output-file /tmp/test-reports/eslint/results.xml
+      - store_test_results:
+          path: /tmp/test-reports
+
+  deploy:
+    docker:
+      - image: circleci/ruby:2.4.2
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+          - v1-vendor-bundle-{{ checksum "Gemfile.lock" }}
+          - v1-vendor-bundle-
+      - run:
+          name: bundle install
+          command: bundle install --jobs=4 --path vendor/bundle
+      - save_cache:
+          key: v1-vendor-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - add_ssh_keys:
+          fingerprints:
+            - "hoge"
+      - run:
+          name: start ssh-agent
+          command: |
+              ssh-agent -s > ~/.ssh_agent_conf
+              source ~/.ssh_agent_conf
+              for _k in $(ls ${HOME}/.ssh/id_*); do
+                ssh-add ${_k} || true
+              done
+      - deploy:
+          name: capistrano deploy
+          command: bundle exec cap production deploy
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
+          filters:
+            branches:
+              only: master
