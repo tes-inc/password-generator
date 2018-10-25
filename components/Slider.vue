@@ -1,9 +1,9 @@
 <template lang="pug">
   v-layout
     v-flex.mr-1.number-field
-      v-text-field(type="number" v-model="internalValue" :min="min" :max="max" :label="label" :disabled="disabled")
+      v-text-field(type="number" v-model="internalValue" :min="min" :max="max" :label="label" :disabled="disabled" :rules="rules" error-count="0")
     v-flex
-      v-slider(v-model="internalValue" :min="min" :max="max" :disabled="disabled")
+      v-slider(v-model="internalValue" :min="min" :max="max" :disabled="disabled" :rules="rules")
 </template>
 
 <script>
@@ -28,6 +28,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    rules: {
+      type: Array,
+      default: () => []
     }
   },
   computed: {
