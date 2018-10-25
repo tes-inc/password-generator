@@ -49,7 +49,7 @@ export default {
       return this.strength === 'custom'
     },
     dynamicTotalMin() {
-      return this.digits + this.symbols
+      return Number(this.digits) + Number(this.symbols)
     }
   },
   watch: {
