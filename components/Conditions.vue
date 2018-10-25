@@ -2,19 +2,19 @@
   v-card
     v-subheader 生成条件
     v-card-text
-      v-form(ref="form" v-model="valid" lazy-validation)
+      v-form
         v-radio-group(v-model="strength" row)
           v-radio(label="普通" value="normal")
           v-radio(label="強い" value="strong")
           v-radio(label="カスタム" value="custom")
 
-        slider(label="桁数" v-model="total" min="4" max="64" :disabled="!isCustom" :rules="rules.total")
+        slider(label="桁数" v-model="total" :min="dynamicTotalMin" max="64" :disabled="!isCustom")
         slider(label="数字の数" v-model="digits" min="0" max="10" :disabled="!isCustom")
         slider(label="記号の数" v-model="symbols" min="0" max="10" :disabled="!isCustom")
         slider(label="生成する数" v-model="generates" min="1" max="50")
 
     v-card-actions
-      v-btn(:loading="generating" :disabled="!valid || generating" block color="primary" @click="submit") 生成する
+      v-btn(:loading="generating" :disabled="generating" block color="primary" @click="submit") 生成する
 </template>
 
 <script>
@@ -26,19 +26,11 @@ export default {
   },
   data() {
     return {
-      valid: true,
       strength: null,
-      total: 4,
+      total: 0,
       digits: 0,
       symbols: 0,
-      generates: 5,
-      rules: {
-        total: [
-          v =>
-            v >= this.dynamicTotalMin ||
-            '数字と記号を合わせた桁数を下回っています'
-        ]
-      }
+      generates: 5
     }
   },
   computed: {
@@ -49,18 +41,13 @@ export default {
       return this.strength === 'custom'
     },
     dynamicTotalMin() {
-      return Number(this.digits) + Number(this.symbols)
+      const v = Number(this.digits) + Number(this.symbols)
+      return v < 4 ? 4 : v
     }
   },
   watch: {
     strength() {
       this.setPreset()
-    },
-    digits() {
-      this.adjustLength()
-    },
-    symbols() {
-      this.adjustLength()
     }
   },
   mounted: function() {
@@ -79,12 +66,6 @@ export default {
           this.digits = 5
           this.symbols = 5
           break
-      }
-    },
-    adjustLength() {
-      // 数字・記号の桁数が変わったら、合計の桁数の帳尻を合わせる
-      if (this.total < this.dynamicTotalMin) {
-        this.total = this.dynamicTotalMin
       }
     },
     async submit() {
