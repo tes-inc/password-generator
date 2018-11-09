@@ -6,19 +6,32 @@
 
 [Nuxt.js](https://nuxtjs.org/) と [Vuetify](https://vuetifyjs.com/) によって作られています。
 
+## Required
+
+- [Docker](https://www.docker.com/)
+- [docker-compose](https://docs.docker.com/compose/)
+
+### Versions
+
+```bash
+$ docker -v
+Docker version 18.06.1-ce, build e68fc7a
+```
+
+```bash
+$ docker-compose -v
+docker-compose version 1.22.0, build f46880f
+```
+
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
-$ yarn install
+$ docker-compose build
 
 # serve with hot reload at localhost:3000
-$ yarn run dev
-
-# build for production and launch server
-$ yarn run build
-$ yarn start
+$ docker-compose up
 
 # generate static project
-$ yarn run generate
+$ docker-compose run --rm nuxt yarn run generate
 ```
