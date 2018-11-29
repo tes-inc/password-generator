@@ -24,7 +24,7 @@ export const actions = {
     const lettersUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     const letters = lettersLower + lettersUpper
     const digits = '0123456789'
-    const symbols = '/*-+.,!#$%&()~|_'
+    const symbols = conditions.symbolChars.join('')
 
     const pick = (characters, haystack, length) => {
       for (let i = 0; i < length; i++) {
