@@ -10,7 +10,12 @@
 
         slider(label="桁数" v-model="total" :min="dynamicTotalMin" max="64" :disabled="!isCustom")
         slider(label="数字の数" v-model="digits" min="0" max="10" :disabled="!isCustom")
-        slider(label="記号の数" v-model="symbols" min="0" max="10" :disabled="!isCustom")
+        slider(label="記号の数" v-model="symbols" min="0" max="10" :disabled="!isCustom || symbolChars.length === 0")
+        template(v-if="isCustom")
+          v-select.ml-5(label="対象の記号" v-model="symbolChars" :items="SYMBOL_CHARS" chips multiple)
+            template(slot="selection" slot-scope="{ item, index }")
+              v-chip(v-if="index < SYMBOL_VIEW_COUNT") {{ item }}
+              span.grey--text.caption.ml-2(v-if="index === SYMBOL_VIEW_COUNT") (+{{ symbolChars.length - SYMBOL_VIEW_COUNT }} others)
         slider(label="生成する数" v-model="generates" min="1" max="50")
 
     v-card-actions
@@ -30,7 +35,8 @@ export default {
       total: 0,
       digits: 0,
       symbols: 0,
-      generates: 5
+      generates: 5,
+      symbolChars: []
     }
   },
   computed: {
@@ -43,15 +49,27 @@ export default {
     dynamicTotalMin() {
       const v = Number(this.digits) + Number(this.symbols)
       return v < 4 ? 4 : v
+    },
+    SYMBOL_CHARS() {
+      return '/*-+.,!#$%&()~|_'.split('')
+    },
+    SYMBOL_VIEW_COUNT() {
+      return 3
     }
   },
   watch: {
     strength() {
       this.setPreset()
+    },
+    symbolChars(newValue) {
+      if (newValue.length === 0) {
+        this.symbols = 0
+      }
     }
   },
   mounted: function() {
     this.strength = 'normal'
+    this.symbolChars = this.SYMBOL_CHARS
   },
   methods: {
     setPreset() {
@@ -73,7 +91,8 @@ export default {
         total: this.total,
         digits: this.digits,
         symbols: this.symbols,
-        generates: this.generates
+        generates: this.generates,
+        symbolChars: this.isCustom ? this.symbolChars : this.SYMBOL_CHARS
       })
     }
   }
