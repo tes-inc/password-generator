@@ -10,7 +10,7 @@
 
         slider(label="桁数" v-model="total" :min="dynamicTotalMin" max="64" :disabled="!isCustom")
         slider(label="数字の数" v-model="digits" min="0" max="10" :disabled="!isCustom")
-        slider(label="記号の数" v-model="symbols" min="0" max="10" :disabled="!isCustom")
+        slider(label="記号の数" v-model="symbols" min="0" max="10" :disabled="!isCustom || symbolChars.length === 0")
         template(v-if="isCustom")
           v-select.ml-5(label="対象の記号" v-model="symbolChars" :items="SYMBOL_CHARS" chips multiple)
             template(slot="selection" slot-scope="{ item, index }")
@@ -60,6 +60,11 @@ export default {
   watch: {
     strength() {
       this.setPreset()
+    },
+    symbolChars(newValue) {
+      if (newValue.length === 0) {
+        this.symbols = 0
+      }
     }
   },
   mounted: function() {
