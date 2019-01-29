@@ -3,6 +3,10 @@ export const state = () => ({
   generating: false
 })
 
+export const getters = {
+  generating: state => state.generating
+}
+
 export const mutations = {
   start(state) {
     state.passwords = []
