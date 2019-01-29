@@ -17,6 +17,11 @@ module.exports = {
       }
     ],
     link: [
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon-180x180.png'
+      },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
@@ -36,7 +41,7 @@ module.exports = {
   plugins: ['@/plugins/vuetify', '@/plugins/vuex-persistedstate.js'],
 
   /* Nuxt.js modules */
-  modules: ['nuxt-clipboard2'],
+  modules: ['@nuxtjs/pwa', 'nuxt-clipboard2'],
 
   /* Build configuration */
   build: {
@@ -52,5 +57,15 @@ module.exports = {
         })
       }
     }
+  },
+
+  // PWA
+  manifest: {
+    name: 'Password Generator',
+    short_name: 'パスジェネ',
+    lang: 'ja'
+  },
+  workbox: {
+    dev: true // 開発環境でもPWA
   }
 }

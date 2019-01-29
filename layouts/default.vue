@@ -1,9 +1,9 @@
 <template lang="pug">
   v-app
     v-toolbar(app dark color="primary")
-      v-spacer
+      nuxt-link.d-flex(to="/")
+        img(src="/logo.svg" alt="logo" height="30px" width="30px" aria-hidden="true")
       v-toolbar-title Password Generator
-      v-spacer
     v-content
       v-container(grid-list-lg)
         nuxt
