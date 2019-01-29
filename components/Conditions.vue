@@ -23,39 +23,75 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import Slider from '~/components/Slider.vue'
 
 export default {
   components: {
     Slider
   },
-  data() {
-    return {
-      strength: null,
-      total: 0,
-      digits: 0,
-      symbols: 0,
-      generates: 5,
-      symbolChars: []
-    }
-  },
   computed: {
-    generating() {
-      return this.$store.state.generating
+    ...mapGetters(['generating']),
+    ...mapGetters('conditions', ['isCustom', 'SYMBOL_CHARS']),
+    strength: {
+      get() {
+        return this.$store.state.conditions.strength
+      },
+      set(value) {
+        const name = 'strength'
+        this.$store.commit('conditions/update', { name, value })
+      }
     },
-    isCustom() {
-      return this.strength === 'custom'
+    total: {
+      get() {
+        return this.$store.state.conditions.total
+      },
+      set(value) {
+        const name = 'total'
+        this.$store.commit('conditions/update', { name, value })
+      }
+    },
+    digits: {
+      get() {
+        return this.$store.state.conditions.digits
+      },
+      set(value) {
+        const name = 'digits'
+        this.$store.commit('conditions/update', { name, value })
+      }
+    },
+    symbols: {
+      get() {
+        return this.$store.state.conditions.symbols
+      },
+      set(value) {
+        const name = 'symbols'
+        this.$store.commit('conditions/update', { name, value })
+      }
+    },
+    generates: {
+      get() {
+        return this.$store.state.conditions.generates
+      },
+      set(value) {
+        const name = 'generates'
+        this.$store.commit('conditions/update', { name, value })
+      }
+    },
+    symbolChars: {
+      get() {
+        return this.$store.state.conditions.symbolChars
+      },
+      set(value) {
+        const name = 'symbolChars'
+        this.$store.commit('conditions/update', { name, value })
+      }
     },
     dynamicTotalMin() {
       const v = Number(this.digits) + Number(this.symbols)
       return v < 4 ? 4 : v
     },
-    SYMBOL_CHARS() {
-      return '/*-+.,!#$%&()~|_'.split('')
-    },
-    SYMBOL_VIEW_COUNT() {
-      return 3
-    }
+    SYMBOL_VIEW_COUNT: () => 3
   },
   watch: {
     strength() {
@@ -68,24 +104,10 @@ export default {
     }
   },
   mounted: function() {
-    this.strength = 'normal'
-    this.symbolChars = this.SYMBOL_CHARS
+    this.initialize()
   },
   methods: {
-    setPreset() {
-      switch (this.strength) {
-        case 'normal':
-          this.total = 12
-          this.digits = 4
-          this.symbols = 0
-          break
-        case 'strong':
-          this.total = 24
-          this.digits = 5
-          this.symbols = 5
-          break
-      }
-    },
+    ...mapActions('conditions', ['initialize', 'setPreset']),
     async submit() {
       await this.$store.dispatch('generate', {
         total: this.total,
