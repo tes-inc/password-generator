@@ -64,8 +64,5 @@ module.exports = {
     name: 'Password Generator',
     short_name: 'パスジェネ',
     lang: 'ja'
-  },
-  workbox: {
-    dev: true // 開発環境でもPWA
   }
 }
