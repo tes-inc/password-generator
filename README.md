@@ -8,30 +8,36 @@
 
 ## Required
 
-- [Docker](https://www.docker.com/)
-- [docker-compose](https://docs.docker.com/compose/)
+- [nodenv](https://github.com/nodenv/nodenv)
+- [Node.js](https://nodejs.org/)
+- [Yarn](https://yarnpkg.com/)
 
 ### Versions
 
 ```bash
-$ docker -v
-Docker version 18.06.1-ce, build e68fc7a
+$ nodenv -v
+nodenv 1.2.0-29-g13bd836
 ```
 
 ```bash
-$ docker-compose -v
-docker-compose version 1.22.0, build f46880f
+$ node -v
+v10.15.3
+```
+
+```bash
+$ yarn -v
+1.15.2
 ```
 
 ## Build Setup
 
 ```bash
 # install dependencies
-$ docker-compose build
+$ yarn install
 
 # serve with hot reload at localhost:3000
-$ docker-compose up
+$ yarn run dev
 
 # generate static project
-$ docker-compose run --rm nuxt yarn run generate
+$ yarn run generate
 ```
