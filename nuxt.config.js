@@ -14,6 +14,10 @@ module.exports = {
         name: 'keywords',
         content:
           'パスワード生成,パスワード自動生成,パスワード作成,パスワード自動作成'
+      },
+      {
+        name: 'google-site-verification',
+        content: 'IUPBgx2AodUtsrt1crSdQS3JgGECpZboqiX6kjGwCe8'
       }
     ],
     link: [
